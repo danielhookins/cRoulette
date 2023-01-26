@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "roulette.h"
 
 
@@ -12,6 +13,8 @@ int main(void)
     // seed the random number generator
     srand(time(NULL));
     
+    // Get the result
+    animate_spin();
     int result = get_result();
 
     // Get the result as a string
@@ -24,7 +27,7 @@ int main(void)
     char *odd_even = get_odd_even(result);
 
     // Print the result
-    printf("[%d] The result is %s, this is %s and it's parity is %s", result, result_string, colour, odd_even);
+    printf("\rThe result is %s, this is %s and it's parity is %s", result_string, colour, odd_even);
 
     // free malloc'd memory
     free(result_string);
@@ -94,4 +97,26 @@ char *get_odd_even(int result)
         odd_even = "odd";
     }
     return odd_even;
+}
+
+/*
+* Animate the wheel spinning
+*/
+void animate_spin(void)
+{
+    char spinners[] = { '|', '/', '-', '\\' };
+    clock_t start_time = clock();
+    
+    while (1) {
+        for (int i = 0; i < 4; i++) {
+            printf("\r%c", spinners[i]);
+            fflush(stdout);
+            usleep(100000);
+
+            if((clock() - start_time)/CLOCKS_PER_SEC > 3) {
+                fflush(stdout);
+                return;
+            }
+        }
+    }
 }
