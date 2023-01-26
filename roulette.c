@@ -71,13 +71,31 @@ char *get_colour(int result)
     // Malloc a string to hold the result
     char *colour = malloc(5);
 
-    if (result == 37 || result == 0) {
-        colour = "green";
-    } else if (result % 2 == 0) {
-        colour = "black";
-    } else {
-        colour = "red";
+    // number ranges 1-10 and 19-28, 
+    // even numbers are black and
+    // odd numbers are red
+    if (result >= 1 && result <= 10 || result >= 19 && result <= 28) {
+        if (result % 2 == 0) {
+            colour = "black";
+        } else {
+            colour = "red";
+        }
     }
+    // number ranges 11-18 and 29-36, 
+    // odd numbers are red and
+    // even numbers are black
+    else if (result >= 11 && result <= 18 || result >= 29 && result <= 36) {
+        if (result % 2 == 0) {
+            colour = "red";
+        } else {
+            colour = "black";
+        }
+    }
+    // 0 and 00 are green
+    else {
+        colour = "green";
+    }
+
     return colour;
 }
 
